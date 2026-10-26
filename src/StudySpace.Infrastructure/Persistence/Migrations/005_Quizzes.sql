@@ -1,0 +1,9 @@
+ALTER TABLE QuizAnswer ADD COLUMN EvaluationToken TEXT;
+ALTER TABLE QuizAnswer ADD COLUMN EvaluationError TEXT;
+CREATE TABLE QuizDetails (ProjectId TEXT NOT NULL,QuizId TEXT NOT NULL,ProviderKey TEXT NOT NULL,IsMock INTEGER NOT NULL CHECK(IsMock IN(0,1)),MixedDifficulty INTEGER NOT NULL CHECK(MixedDifficulty IN(0,1)),InputChunksJson TEXT NOT NULL,FiltersJson TEXT NOT NULL,PromptVersion TEXT NOT NULL,PRIMARY KEY(ProjectId,QuizId),FOREIGN KEY(ProjectId,QuizId) REFERENCES Quiz(ProjectId,Id) ON DELETE CASCADE);
+CREATE TABLE QuizAttemptDetails (ProjectId TEXT NOT NULL,AttemptId TEXT NOT NULL,Title TEXT NOT NULL,ProviderKey TEXT NOT NULL,IsMock INTEGER NOT NULL CHECK(IsMock IN(0,1)),MixedDifficulty INTEGER NOT NULL CHECK(MixedDifficulty IN(0,1)),CurrentPosition INTEGER NOT NULL DEFAULT 0 CHECK(CurrentPosition>=0),PRIMARY KEY(ProjectId,AttemptId),FOREIGN KEY(ProjectId,AttemptId) REFERENCES QuizAttempt(ProjectId,Id) ON DELETE CASCADE);
+CREATE TABLE AnswerEvaluation (ProjectId TEXT NOT NULL,AttemptQuestionId TEXT NOT NULL,AnswerRevision INTEGER NOT NULL,Score REAL NOT NULL CHECK(Score BETWEEN 0 AND 1),FeedbackJson TEXT NOT NULL,EvaluatedAtUtc TEXT NOT NULL,PRIMARY KEY(ProjectId,AttemptQuestionId,AnswerRevision),FOREIGN KEY(ProjectId,AttemptQuestionId) REFERENCES AttemptQuestion(ProjectId,Id) ON DELETE CASCADE);
+CREATE TABLE AttemptCitation (ProjectId TEXT NOT NULL,AttemptQuestionId TEXT NOT NULL,ChunkId TEXT NOT NULL,QuoteSnapshot TEXT NOT NULL,SourceTitleSnapshot TEXT NOT NULL,LocatorSnapshot TEXT,PRIMARY KEY(ProjectId,AttemptQuestionId,ChunkId),FOREIGN KEY(ProjectId,AttemptQuestionId) REFERENCES AttemptQuestion(ProjectId,Id) ON DELETE CASCADE,FOREIGN KEY(ProjectId,ChunkId) REFERENCES SourceChunk(ProjectId,Id));
+CREATE INDEX IX_QuizAttempt_Status ON QuizAttempt(ProjectId,Status,StartedAtUtc DESC,Id);
+CREATE INDEX IX_QuizAnswer_Evaluation ON QuizAnswer(ProjectId,EvaluationStatus);
+

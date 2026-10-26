@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Flashcards" x:Class="StudySpace.App.Features.Flashcards.EditFlashcardPage"
+ x:DataType="vm:EditFlashcardViewModel" Title="{Binding Heading}">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" /><Label Text="{Binding Heading}" Style="{StaticResource Heading}" />
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout Spacing="{StaticResource Space24}" IsEnabled="{Binding IsReady}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsSaved}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Fronte / domanda *" /><Editor Text="{Binding Front}" MaxLength="2000" HeightRequest="130" Placeholder="Quale concetto vuoi ricordare?" />
+    <Label Text="Retro / risposta *" /><Editor Text="{Binding Back}" MaxLength="8000" HeightRequest="180" Placeholder="Una risposta chiara e completa" />
+    <Label Text="Spiegazione facoltativa" /><Editor Text="{Binding Explanation}" MaxLength="8000" HeightRequest="110" Placeholder="Un esempio o un approfondimento" />
+    <Picker Title="Difficoltà" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}" ItemDisplayBinding="{Binding Title, x:DataType=vm:DifficultyChoice}" />
+    <Label Text="Etichette" /><Entry Text="{Binding TagsText}" MaxLength="329" Placeholder="Es. ripasso, protocolli, esame" /><Label Text="Fino a 10 etichette separate da virgole." Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+    <HorizontalStackLayout><CheckBox IsChecked="{Binding IsFavorite}" SemanticProperties.Description="Preferita" /><Label Text="Preferita" VerticalOptions="Center" /></HorizontalStackLayout>
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Fonte collegata · facoltativa" Style="{StaticResource Subheading}" />
+    <Picker Title="Nessuna fonte collegata" ItemsSource="{Binding SourceChoices}" SelectedItem="{Binding PrimarySource}" ItemDisplayBinding="{Binding DisplayTitle, x:DataType=vm:MaterialSourceChoice}" />
+    <Button Text="Rimuovi fonte collegata" Command="{Binding ClearSourceCommand}" Style="{StaticResource QuietButton}" HorizontalOptions="Start" />
+    <Label Text="I riferimenti ai brani si gestiscono qui sotto e rimangono disponibili anche se una fonte viene archiviata." Style="{StaticResource Muted}" />
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}"><vm:StudyMaterialPickerView BindingContext="{Binding Materials}" /></Border>
+  </VerticalStackLayout>
+  <Button Text="{Binding SaveCaption}" Command="{Binding SaveCommand}" IsEnabled="{Binding IsReady}" />
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+

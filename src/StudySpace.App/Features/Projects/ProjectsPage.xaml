@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Projects" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Projects.ProjectsPage" x:DataType="vm:ProjectsViewModel" Title="{Binding Title}">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="{StaticResource Space16}" MaximumWidthRequest="{StaticResource WideContentWidth}">
+  <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" AlignItems="Center">
+   <VerticalStackLayout Spacing="{StaticResource Space4}" Margin="{StaticResource ActionGap}"><Label Text="StudySpace" Style="{StaticResource Heading}" SemanticProperties.HeadingLevel="Level1" /><Label Text="Le tue materie, un passo alla volta." Style="{StaticResource Muted}" /></VerticalStackLayout>
+   <Button Text="+ Crea progetto" Command="{Binding CreateCommand}" Margin="{StaticResource ActionEndGap}" />
+  </FlexLayout>
+  <Border Grid.Row="1" Style="{StaticResource CompactCard}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space8}">
+    <SearchBar Placeholder="Cerca un progetto" Text="{Binding SearchText}" MaxLength="200" SearchCommand="{Binding LoadCommand}" SemanticProperties.Description="Cerca progetti per nome o descrizione" />
+    <Button Grid.Column="1" Text="Filtri" Command="{Binding ToggleFiltersCommand}" Style="{StaticResource SecondaryButton}" SemanticProperties.Description="Mostra o nascondi i filtri dei progetti" />
+   </Grid>
+   <FlexLayout x:Name="AdvancedFilters" Wrap="Wrap" AlignItems="Center" IsVisible="False">
+    <Picker Title="Etichette" ItemsSource="{Binding TagFilters}" SelectedItem="{Binding SelectedTag}" ItemDisplayBinding="{Binding Title,x:DataType=vm:TagChoice}" WidthRequest="{StaticResource FilterWidth}" Margin="{StaticResource ActionGap}" />
+    <HorizontalStackLayout IsVisible="{Binding CanChangeFavoriteFilter}" Margin="{StaticResource ActionGap}" VerticalOptions="Center"><CheckBox IsChecked="{Binding FavoritesOnly}" SemanticProperties.Description="Mostra solo i progetti preferiti" /><Label Text="Solo preferiti" VerticalOptions="Center" /></HorizontalStackLayout>
+    <Button Text="Applica filtri" Command="{Binding LoadCommand}" Margin="{StaticResource ActionGap}" Style="{StaticResource SecondaryButton}" />
+    <Button Text="Azzera" Command="{Binding ResetFiltersCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+   </FlexLayout>
+  </VerticalStackLayout></Border>
+  <VerticalStackLayout Grid.Row="2" Spacing="{StaticResource Space4}"><ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" /><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /></VerticalStackLayout>
+  <Grid Grid.Row="3"><controls:EmptyStateView Heading="{Binding EmptyHeading}" Message="{Binding EmptyMessage}" IsVisible="{Binding IsEmpty}" VerticalOptions="Start" />
+   <CollectionView x:Name="ProjectList" ItemsSource="{Binding Projects}" SelectionMode="None" ItemSizingStrategy="MeasureAllItems">
+    <CollectionView.Triggers><DataTrigger TargetType="CollectionView" Binding="{Binding IsEmpty}" Value="True"><Setter Property="IsVisible" Value="False" /></DataTrigger></CollectionView.Triggers>
+    <CollectionView.ItemsLayout><GridItemsLayout x:Name="CardsLayout" Orientation="Vertical" Span="1" HorizontalItemSpacing="{StaticResource Space16}" VerticalItemSpacing="{StaticResource Space16}" /></CollectionView.ItemsLayout>
+    <CollectionView.ItemTemplate><DataTemplate x:DataType="vm:ProjectCardViewModel"><controls:ProjectCardView /></DataTemplate></CollectionView.ItemTemplate>
+    <CollectionView.Footer><Button Text="Carica altri progetti" Command="{Binding LoadMoreCommand}" IsVisible="{Binding HasMore}" Margin="{StaticResource SectionGap}" Style="{StaticResource SecondaryButton}" /></CollectionView.Footer>
+   </CollectionView>
+  </Grid>
+ </Grid>
+</ContentPage>

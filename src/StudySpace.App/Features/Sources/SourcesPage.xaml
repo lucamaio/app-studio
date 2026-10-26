@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Sources" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Sources.SourcesPage" x:DataType="vm:SourcesViewModel" Title="Fonti">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,Auto,*" RowSpacing="{StaticResource Space16}">
+  <VerticalStackLayout Spacing="{StaticResource Space12}">
+   <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" />
+   <Label Text="Le tue fonti" Style="{StaticResource Heading}" />
+   <Label Text="Raccogli documenti e appunti per questo progetto. Tutto resta sul dispositivo." Style="{StaticResource Muted}" />
+   <FlexLayout Wrap="Wrap" IsEnabled="{Binding IsReady}">
+    <FlexLayout.Triggers><DataTrigger TargetType="FlexLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></FlexLayout.Triggers>
+    <Button Text="Aggiungi file" Command="{Binding ImportFileCommand}" Margin="{StaticResource ActionGap}" />
+    <Button Text="Scrivi un testo" Command="{Binding AddManualCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" />
+    <Button Text="Aggiorna" Command="{Binding LoadCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+   </FlexLayout>
+   <Label Text="PDF · TXT · Markdown · DOCX — fino a 25 MB. Per le scansioni, inserisci il testo manualmente." Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+  </VerticalStackLayout>
+  <VerticalStackLayout Grid.Row="1" Spacing="{StaticResource Space8}">
+   <HorizontalStackLayout Spacing="{StaticResource Space12}" IsVisible="{Binding IsBusy}">
+    <ActivityIndicator IsRunning="{Binding IsBusy}" />
+    <Label Text="{Binding Activity}" VerticalOptions="Center" />
+   </HorizontalStackLayout>
+   <Button Text="Annulla elaborazione" Command="{Binding ImportFileCancelCommand}" IsVisible="{Binding ImportFileCommand.IsRunning}" Style="{StaticResource QuietButton}" HorizontalOptions="Start" />
+   <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+   <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" HorizontalOptions="Start" />
+  </VerticalStackLayout>
+  <Grid Grid.Row="2">
+   <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+    <CollectionView.Triggers><DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></CollectionView.Triggers>
+    <CollectionView.ItemTemplate><DataTemplate x:DataType="vm:SourceCardViewModel">
+     <Border Style="{StaticResource Card}" Margin="{StaticResource ItemGap}">
+      <VerticalStackLayout Spacing="{StaticResource Space12}">
+       <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space12}">
+        <Label Text="{Binding Title}" Style="{StaticResource Subheading}" LineBreakMode="WordWrap" />
+        <Border Grid.Column="1" Style="{StaticResource SourceStatusPill}" VerticalOptions="Start">
+         <Label Text="{Binding Status}" Style="{StaticResource SourceStatusText}" />
+        </Border>
+       </Grid>
+       <Label Text="{Binding Info}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+       <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+       <Grid ColumnDefinitions="*,Auto"><Label Text="{Binding ChunkLabel}" Style="{StaticResource Muted}" VerticalOptions="Center" />
+        <Button Grid.Column="1" Text="Apri dettagli" Command="{Binding OpenCommand}" Style="{StaticResource QuietButton}" /></Grid>
+      </VerticalStackLayout>
+     </Border>
+    </DataTemplate></CollectionView.ItemTemplate>
+    <CollectionView.Footer><Button Text="Carica altre fonti" Command="{Binding LoadMoreCommand}" IsVisible="{Binding HasMore}" Margin="{StaticResource SmallVerticalGap}" /></CollectionView.Footer>
+   </CollectionView>
+   <controls:EmptyStateView IsVisible="{Binding IsEmpty}" Heading="Il materiale parte da qui"
+    Message="Aggiungi il primo documento o scrivi un appunto. Le fonti pronte saranno disponibili per le prossime attività di studio." InputTransparent="True" />
+  </Grid>
+ </Grid>
+</ContentPage>
+
+

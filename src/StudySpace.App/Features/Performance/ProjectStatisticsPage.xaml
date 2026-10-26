@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Performance" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Performance.ProjectStatisticsPage" x:DataType="vm:ProjectStatisticsViewModel" Title="Statistiche progetto">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,*" RowSpacing="{StaticResource Space12}">
+  <VerticalStackLayout><ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" /><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /><Button Text="Aggiorna statistiche" Command="{Binding LoadCommand}" Style="{StaticResource QuietButton}" /></VerticalStackLayout>
+  <ScrollView Grid.Row="1"><VerticalStackLayout Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}" IsVisible="{Binding IsReady}">
+   <Label Text="{Binding ProjectName}" Style="{StaticResource Heading}" />
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="{Binding Summary}" Style="{StaticResource Subheading}" /><Label Text="{Binding DemoNotice}" Style="{StaticResource Muted}" /><Button Text="Apri storico quiz" Command="{Binding HistoryCommand}" HorizontalOptions="Start" /></VerticalStackLayout></Border>
+   <controls:EmptyStateView Heading="Un quiz alla volta" Message="Completa il primo quiz per vedere percentuale media, andamento recente e indicazioni per il ripasso." IsVisible="False"><controls:EmptyStateView.Triggers><DataTrigger TargetType="controls:EmptyStateView" Binding="{Binding HasResults}" Value="False"><Setter Property="IsVisible" Value="True" /></DataTrigger></controls:EmptyStateView.Triggers></controls:EmptyStateView>
+   <Label Text="Andamento recente" Style="{StaticResource Subheading}" IsVisible="{Binding HasResults}" />
+   <Label Text="Ultimi dieci quiz completati, dal più recente. Le barre rappresentano la percentuale ottenuta." Style="{StaticResource Muted}" IsVisible="{Binding HasResults}" />
+   <VerticalStackLayout Spacing="{StaticResource Space12}" BindableLayout.ItemsSource="{Binding Recent}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:HistoryItemViewModel"><Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space8}"><Label Text="{Binding Title}" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Score}" /><ProgressBar Progress="{Binding Progress}" /><Label Text="{Binding Details}" Style="{StaticResource Muted}" /><Button Text="Rivedi risultato" Command="{Binding OpenCommand}" Style="{StaticResource QuietButton}" HorizontalOptions="Start" /></VerticalStackLayout></Border></DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+   <Label Text="Argomenti più difficili" Style="{StaticResource Subheading}" />
+   <controls:PerformanceGroupsView ItemsSource="{Binding Difficulties}" />
+   <Label Text="Nessuna difficoltà emersa dalle evidenze disponibili." Style="{StaticResource Muted}" IsVisible="False"><Label.Triggers><DataTrigger TargetType="Label" Binding="{Binding HasDifficulties}" Value="False"><Setter Property="IsVisible" Value="True" /></DataTrigger></Label.Triggers></Label>
+   <Label Text="Dove stai migliorando" Style="{StaticResource Subheading}" />
+   <Label Text="Confrontiamo fino a cinque risposte dell'ultimo quiz pertinente con cinque dei quiz precedenti, sullo stesso argomento, tag, fonte o concetto. Servono almeno tre risposte in ciascun gruppo e un aumento di almeno 10 punti percentuali." Style="{StaticResource Muted}" />
+   <controls:PerformanceGroupsView ItemsSource="{Binding Improving}" />
+   <Label Text="Servono altre risposte confrontabili per individuare un miglioramento." Style="{StaticResource Muted}" IsVisible="False"><Label.Triggers><DataTrigger TargetType="Label" Binding="{Binding HasImproving}" Value="False"><Setter Property="IsVisible" Value="True" /></DataTrigger></Label.Triggers></Label>
+  </VerticalStackLayout></ScrollView>
+ </Grid>
+</ContentPage>
+

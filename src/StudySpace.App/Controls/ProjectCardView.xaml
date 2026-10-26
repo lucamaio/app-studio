@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Projects" x:Class="StudySpace.App.Controls.ProjectCardView" x:DataType="vm:ProjectCardViewModel">
+    <Border Style="{StaticResource Card}" Padding="{StaticResource CardInset}" Margin="{StaticResource SmallItemGap}">
+        <FlyoutBase.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Modifica" Command="{Binding EditCommand}" />
+                <MenuFlyoutItem Text="{Binding FavoriteAction}" Command="{Binding FavoriteCommand}" />
+                <MenuFlyoutSeparator />
+                <MenuFlyoutItem Text="Elimina" Command="{Binding DeleteCommand}" />
+            </MenuFlyout>
+        </FlyoutBase.ContextFlyout>
+        <VerticalStackLayout Spacing="{StaticResource Space12}">
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="{StaticResource Space6}">
+                <Border Style="{StaticResource IconBadge}">
+                    <Label Text="{Binding Icon}" FontSize="{StaticResource FontIcon}" HorizontalOptions="Center" VerticalOptions="Center" />
+                </Border>
+                <Button Grid.Column="2" Text="{Binding FavoriteSymbol}" Command="{Binding FavoriteCommand}" Style="{StaticResource IconButton}" SemanticProperties.Description="{Binding FavoriteAction}" />
+                <Button Grid.Column="3" Text="{StaticResource IconMenu}" Command="{Binding MenuCommand}" Style="{StaticResource IconButton}" SemanticProperties.Description="Azioni del progetto" />
+            </Grid>
+            <Label Text="{Binding Name}" Style="{StaticResource Subheading}" MaxLines="2" LineBreakMode="TailTruncation">
+                <Label.GestureRecognizers><TapGestureRecognizer Command="{Binding OpenCommand}" /></Label.GestureRecognizers>
+            </Label>
+            <Label Text="{Binding Description}" Style="{StaticResource Muted}" IsVisible="{Binding HasDescription}" MaxLines="2" LineBreakMode="TailTruncation" />
+            <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Tags}" IsVisible="{Binding HasTags}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="x:String">
+                        <Border Style="{StaticResource TagPill}"><Label Text="{Binding .}" FontSize="{StaticResource FontCaption}" LineBreakMode="TailTruncation" MaxLines="1" /></Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </FlexLayout>
+            <Label Text="{Binding UpdatedLabel}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+            <BoxView Color="{Binding Color}" HeightRequest="{StaticResource Space4}" CornerRadius="{StaticResource IndicatorRadius}" />
+            <Button Text="Apri progetto →" Command="{Binding OpenCommand}" Style="{StaticResource SecondaryButton}" />
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
+
+

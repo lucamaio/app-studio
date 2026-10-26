@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Performance" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Performance.QuizResultsPage" x:DataType="vm:QuizResultsViewModel" Title="Risultato quiz">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,*" RowSpacing="{StaticResource Space12}">
+  <VerticalStackLayout><ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" /><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /><Button Text="Ricarica risultato" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" /></VerticalStackLayout>
+  <ScrollView x:Name="ResultScroll" Grid.Row="1"><VerticalStackLayout Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}" IsVisible="{Binding IsReady}">
+   <Label Text="Hai concluso il quiz" Style="{StaticResource Heading}" />
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="{Binding Score}" Style="{StaticResource Heading}" /><Label Text="{Binding Details}" Style="{StaticResource Muted}" /><Label Text="{Binding Counts}" /></VerticalStackLayout></Border>
+   <FlexLayout Wrap="Wrap"><Button Text="Storico quiz" Command="{Binding HistoryCommand}" Margin="{StaticResource ActionGap}" /><Button Text="Statistiche progetto" Command="{Binding StatisticsCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" /></FlexLayout>
+   <Label Text="Argomenti da migliorare" Style="{StaticResource Subheading}" />
+   <Label Text="Difficoltà ricavate dallo storico fino alla conclusione di questo quiz. Mostriamo fino a tre evidenze per argomenti, tag, fonti e concetti disponibili." Style="{StaticResource Muted}" />
+   <controls:PerformanceGroupsView ItemsSource="{Binding Difficulties}" />
+   <Label Text="Nessuna difficoltà ricorrente emersa dalle risposte valutate. Continua a esercitarti per raccogliere altre evidenze." IsVisible="False" Style="{StaticResource Muted}"><Label.Triggers><DataTrigger TargetType="Label" Binding="{Binding HasDifficulties}" Value="False"><Setter Property="IsVisible" Value="True" /></DataTrigger></Label.Triggers></Label>
+   <Label x:Name="QuestionsHeading" Text="Rivedi le tue risposte" Style="{StaticResource Subheading}" />
+   <Label Text="{Binding PageLabel}" Style="{StaticResource Muted}" />
+   <VerticalStackLayout Spacing="{StaticResource Space16}" BindableLayout.ItemsSource="{Binding Questions}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:ResultQuestionViewModel">
+    <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+     <Label Text="{Binding Heading}" Style="{StaticResource Subheading}" /><Label Text="{Binding Prompt}" FontSize="{StaticResource FontLead}" />
+     <Label Text="La mia risposta" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding MyAnswer}" />
+     <Label Text="Risposta corretta / ideale" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding IdealAnswer}" />
+     <Label Text="Spiegazione" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Explanation}" />
+     <Label Text="Valutazione" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Evaluation}" /><Label Text="{Binding Concepts}" Style="{StaticResource Muted}" />
+     <Label Text="Fonti del tentativo" FontFamily="{StaticResource SemiboldFont}" />
+     <VerticalStackLayout Spacing="{StaticResource Space8}" BindableLayout.ItemsSource="{Binding References}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:EvidenceLinkViewModel"><Button Text="{Binding Title}" Command="{Binding OpenCommand}" Style="{StaticResource QuietButton}" LineBreakMode="WordWrap" HorizontalOptions="Start" /></DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+    </VerticalStackLayout></Border>
+   </DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+   <Grid ColumnDefinitions="*,*" ColumnSpacing="{StaticResource Space12}"><Button Text="← Precedenti" Command="{Binding PreviousCommand}" IsEnabled="{Binding CanPrevious}" /><Button Grid.Column="1" Text="Successive →" Command="{Binding NextCommand}" IsEnabled="{Binding CanNext}" /></Grid>
+  </VerticalStackLayout></ScrollView>
+ </Grid>
+</ContentPage>
+

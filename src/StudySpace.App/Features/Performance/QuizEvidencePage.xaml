@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Performance" x:Class="StudySpace.App.Features.Performance.QuizEvidencePage"
+ x:DataType="vm:QuizEvidenceViewModel" Title="Riferimento alla fonte">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space16}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" /><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /><Button Text="Ricarica riferimento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout Spacing="{StaticResource Space16}" IsVisible="{Binding IsReady}"><Label Text="{Binding Title}" Style="{StaticResource Heading}" /><Label Text="{Binding Locator}" Style="{StaticResource Subheading}" />
+   <Label Text="Questo è l'estratto conservato nel tentativo, consultabile anche dopo l'archiviazione o la rinomina della fonte." Style="{StaticResource Muted}" />
+   <Border Style="{StaticResource Card}"><Label Text="{Binding Quote}" FontSize="{StaticResource FontLead}" /></Border>
+  </VerticalStackLayout>
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+

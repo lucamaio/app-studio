@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Sources" x:Class="StudySpace.App.Features.Sources.SourceDetailPage"
+ x:DataType="vm:SourceDetailViewModel" Title="Dettagli fonte">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Button Text="Annulla elaborazione" Command="{Binding RetryCancelCommand}" IsVisible="{Binding RetryCommand.IsRunning}" Style="{StaticResource QuietButton}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Ricarica fonte" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout Spacing="{StaticResource Space24}" IsVisible="{Binding IsReady}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Label Text="{Binding Card.Title}" Style="{StaticResource Heading}" />
+   <Label Text="{Binding Card.Info}" Style="{StaticResource Muted}" />
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="{Binding Card.Status}" Style="{StaticResource Subheading}" />
+    <Label Text="{Binding Card.ErrorMessage}" IsVisible="{Binding Card.HasError}" Style="{StaticResource Error}" />
+    <Label Text="{Binding OriginalFileName}" LineBreakMode="CharacterWrap" />
+    <Label Text="Copia privata sul dispositivo" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+    <Label Text="{Binding LocalCopy}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" LineBreakMode="CharacterWrap" />
+    <Label Text="{Binding Card.ChunkLabel}" Style="{StaticResource Muted}" />
+    <Button Text="Riprova elaborazione" Command="{Binding RetryCommand}" IsVisible="{Binding Card.CanRetry}" HorizontalOptions="Start" />
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Rinomina fonte" Style="{StaticResource Subheading}" />
+    <Entry Text="{Binding RenameTitle}" MaxLength="200" Placeholder="Titolo" />
+    <Button Text="Salva titolo" Command="{Binding RenameCommand}" HorizontalOptions="Start" />
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}" IsVisible="{Binding HasText}"><VerticalStackLayout Spacing="{StaticResource Space16}">
+    <Label Text="{Binding PageLabel}" Style="{StaticResource Subheading}" />
+    <Label Text="Controlla il testo: colonne, tabelle e formule possono perdere la disposizione originale." Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+    <Label Text="{Binding ExtractedPage}" LineBreakMode="WordWrap" />
+    <Grid ColumnDefinitions="*,*" ColumnSpacing="{StaticResource Space12}">
+     <Button Text="Precedente" Command="{Binding PreviousTextCommand}" IsEnabled="{Binding CanPrevious}" Style="{StaticResource QuietButton}" />
+     <Button Grid.Column="1" Text="Successiva" Command="{Binding NextTextCommand}" IsEnabled="{Binding CanNext}" Style="{StaticResource QuietButton}" />
+    </Grid>
+   </VerticalStackLayout></Border>
+   <Label Text="Parti del documento" Style="{StaticResource Subheading}" IsVisible="{Binding HasText}" />
+   <VerticalStackLayout BindableLayout.ItemsSource="{Binding Chunks}" Spacing="{StaticResource Space12}">
+    <BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:ChunkPresentation">
+     <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space8}">
+      <Label Text="{Binding Title}" FontFamily="{StaticResource SemiboldFont}" />
+      <Label Text="{Binding Locator}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+      <Label Text="{Binding Text}" />
+     </VerticalStackLayout></Border>
+    </DataTemplate></BindableLayout.ItemTemplate>
+   </VerticalStackLayout>
+   <Label Text="{Binding ChunkPageLabel}" Style="{StaticResource Muted}" IsVisible="{Binding HasText}" />
+   <FlexLayout Wrap="Wrap" IsVisible="{Binding HasText}">
+    <Button Text="Chunk precedenti" Command="{Binding PreviousChunksCommand}" IsEnabled="{Binding CanPreviousChunks}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" />
+    <Button Text="Chunk successivi" Command="{Binding LoadMoreChunksCommand}" IsEnabled="{Binding HasMoreChunks}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+   </FlexLayout>
+   <Button Text="Elimina fonte" Command="{Binding DeleteCommand}" Style="{StaticResource DangerButton}" />
+  </VerticalStackLayout>
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+
+

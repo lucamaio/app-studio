@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Projects" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Projects.ProjectSectionPage" x:DataType="vm:ProjectSectionViewModel" Title="{Binding Title}">
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+            <Label Text="{Binding ProjectName}" Style="{StaticResource Heading}" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+            <Button Text="Riprova" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+            <controls:EmptyStateView Heading="{Binding Title}" Message="{Binding Message}" IsVisible="{Binding IsReady}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

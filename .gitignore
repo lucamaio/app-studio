@@ -1,0 +1,11 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+TestResults/
+artifacts/
+*.user
+*.db3
+*.db3-*
+.build/
+

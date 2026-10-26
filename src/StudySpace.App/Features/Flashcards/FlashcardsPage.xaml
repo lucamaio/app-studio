@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Flashcards" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Flashcards.FlashcardsPage" x:DataType="vm:FlashcardsViewModel" Title="Flashcard">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,Auto,*" RowSpacing="{StaticResource Space16}">
+  <VerticalStackLayout Spacing="{StaticResource Space12}">
+   <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" />
+   <Label Text="Un concetto alla volta" Style="{StaticResource Heading}" />
+   <FlexLayout Wrap="Wrap" IsEnabled="{Binding IsReady}">
+    <FlexLayout.Triggers><DataTrigger TargetType="FlexLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></FlexLayout.Triggers>
+    <Button Text="Nuova flashcard" Command="{Binding CreateCommand}" Margin="{StaticResource ActionGap}" />
+    <Button Text="Dalle fonti · demo" Command="{Binding GenerateCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" />
+    <Button Text="Studia risultati" Command="{Binding StudyCommand}" IsEnabled="{Binding HasCards}" Margin="{StaticResource ActionEndGap}" />
+   </FlexLayout>
+   <Border Style="{StaticResource Card}" Padding="{StaticResource Inset16}"><VerticalStackLayout Spacing="{StaticResource Space8}">
+    <SearchBar Text="{Binding SearchText}" SearchCommand="{Binding SearchCommand}" Placeholder="Cerca domanda, risposta o spiegazione" MaxLength="200" />
+    <FlexLayout Wrap="Wrap" AlignItems="Center">
+     <Picker Title="Etichetta" ItemsSource="{Binding Tags}" SelectedItem="{Binding SelectedTag}" ItemDisplayBinding="{Binding Title, x:DataType=vm:FlashcardTagChoice}" WidthRequest="{StaticResource FilterWidth}" Margin="{StaticResource ActionGap}" />
+     <Picker Title="Difficoltà" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}" ItemDisplayBinding="{Binding Title, x:DataType=vm:DifficultyChoice}" WidthRequest="{StaticResource FilterWidth}" Margin="{StaticResource ActionGap}" />
+     <HorizontalStackLayout Margin="{StaticResource ActionGap}"><CheckBox IsChecked="{Binding FavoritesOnly}" SemanticProperties.Description="Solo preferite" /><Label Text="Solo preferite" VerticalOptions="Center" /></HorizontalStackLayout>
+     <Button Text="Cerca / Filtra" Command="{Binding SearchCommand}" Margin="{StaticResource ActionGap}" /><Button Text="Azzera" Command="{Binding ResetCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+    </FlexLayout>
+   </VerticalStackLayout></Border>
+  </VerticalStackLayout>
+  <VerticalStackLayout Grid.Row="1" Spacing="{StaticResource Space8}">
+   <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+   <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+   <Button Text="Ricarica" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" HorizontalOptions="Start" />
+  </VerticalStackLayout>
+  <Grid Grid.Row="2">
+   <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+    <CollectionView.Triggers><DataTrigger TargetType="CollectionView" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></CollectionView.Triggers>
+    <CollectionView.ItemTemplate><DataTemplate x:DataType="vm:FlashcardCardViewModel">
+     <Border Style="{StaticResource Card}" Margin="{StaticResource ItemGap}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space12}"><Label Text="{Binding ShortFront}" Style="{StaticResource Subheading}" /><Button Grid.Column="1" Text="{Binding FavoriteSymbol}" Command="{Binding FavoriteCommand}" SemanticProperties.Description="{Binding FavoriteLabel}" Style="{StaticResource QuietButton}" VerticalOptions="Start" /></Grid>
+      <Label Text="{Binding Info}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+      <Label Text="{Binding TagsLabel}" IsVisible="{Binding HasTags}" TextColor="{AppThemeBinding Light={StaticResource Accent}, Dark={StaticResource AccentDark}}" />
+      <Label Text="{Binding ReferenceLabel}" IsVisible="{Binding HasReferences}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+      <Label Text="{Binding DateLabel}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+      <FlexLayout Wrap="Wrap"><Button Text="Modifica" Command="{Binding EditCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource InlineGap}" /><Button Text="Elimina" Command="{Binding DeleteCommand}" Style="{StaticResource DangerButton}" /></FlexLayout>
+     </VerticalStackLayout></Border>
+    </DataTemplate></CollectionView.ItemTemplate>
+    <CollectionView.Footer><Button Text="Carica altre flashcard" Command="{Binding LoadMoreCommand}" IsVisible="{Binding HasMore}" Margin="{StaticResource SmallVerticalGap}" /></CollectionView.Footer>
+   </CollectionView>
+   <controls:EmptyStateView Heading="Spazio alle idee" Message="{Binding EmptyMessage}" IsVisible="{Binding IsEmpty}" InputTransparent="True" />
+  </Grid>
+ </Grid>
+</ContentPage>
+
+

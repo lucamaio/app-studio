@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Projects" x:Class="StudySpace.App.Features.Projects.ProjectDashboardPage" x:DataType="vm:ProjectDashboardViewModel" Title="Il progetto">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,*" RowSpacing="{StaticResource Space12}">
+  <VerticalStackLayout Spacing="{StaticResource Space8}"><ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" /><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /><Button Text="Ricarica progetto" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" /></VerticalStackLayout>
+  <ScrollView Grid.Row="1"><VerticalStackLayout Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}" IsVisible="{Binding HasProject}">
+   <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="{StaticResource Space8}">
+    <Label Text="{Binding Card.Name}" Style="{StaticResource Heading}" MaxLines="3" LineBreakMode="TailTruncation" SemanticProperties.HeadingLevel="Level1" />
+    <Button Grid.Column="1" Text="{Binding Card.FavoriteSymbol}" Command="{Binding Card.FavoriteCommand}" Style="{StaticResource IconButton}" SemanticProperties.Description="{Binding Card.FavoriteAction}" VerticalOptions="Start" />
+    <Button Grid.Column="2" Text="{StaticResource IconMenu}" Command="{Binding Card.MenuCommand}" Style="{StaticResource IconButton}" SemanticProperties.Description="Azioni del progetto" VerticalOptions="Start" />
+   </Grid>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Il prossimo passo" Style="{StaticResource Caption}" /><Label Text="{Binding ContinueHint}" Style="{StaticResource Subheading}" />
+    <FlexLayout Wrap="Wrap" AlignItems="Stretch">
+     <Button Text="Continua a studiare" Command="{Binding ContinueStudyCommand}" MinimumWidthRequest="{StaticResource MainActionWidth}" MinimumHeightRequest="{StaticResource PrimaryTouchTarget}" Margin="{StaticResource ActionGap}" FlexLayout.Grow="1" />
+     <Button Text="Nuovo quiz" Command="{Binding NewQuizCommand}" MinimumWidthRequest="{StaticResource MainActionWidth}" Margin="{StaticResource ActionEndGap}" Style="{StaticResource SecondaryButton}" FlexLayout.Grow="1" />
+    </FlexLayout>
+   </VerticalStackLayout></Border>
+   <Grid ColumnDefinitions="*,*,*" ColumnSpacing="{StaticResource Space8}">
+    <Border Style="{StaticResource CompactCard}" Padding="{StaticResource Inset12}"><VerticalStackLayout Spacing="{StaticResource Space4}"><Label Text="{Binding SourceCount}" Style="{StaticResource Subheading}" /><Label Text="Fonti" Style="{StaticResource Caption}" /></VerticalStackLayout></Border>
+    <Border Grid.Column="1" Style="{StaticResource CompactCard}" Padding="{StaticResource Inset12}"><VerticalStackLayout Spacing="{StaticResource Space4}"><Label Text="{Binding FlashcardCount}" Style="{StaticResource Subheading}" /><Label Text="Flashcard" Style="{StaticResource Caption}" /></VerticalStackLayout></Border>
+    <Border Grid.Column="2" Style="{StaticResource CompactCard}" Padding="{StaticResource Inset12}"><VerticalStackLayout Spacing="{StaticResource Space4}"><Label Text="{Binding CompletedQuizCount}" Style="{StaticResource Subheading}" /><Label Text="Quiz conclusi" Style="{StaticResource Caption}" /></VerticalStackLayout></Border>
+   </Grid>
+   <VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="Il tuo spazio di studio" Style="{StaticResource Subheading}" />
+    <FlexLayout Wrap="Wrap">
+     <Button Text="Fonti" Command="{Binding OpenSectionCommand}" CommandParameter="sources" Style="{StaticResource NavigationButton}" MinimumWidthRequest="{StaticResource NavigationTileWidth}" Margin="{StaticResource ActionGap}" FlexLayout.Grow="1" />
+     <Button Text="Flashcard" Command="{Binding OpenSectionCommand}" CommandParameter="flashcards" Style="{StaticResource NavigationButton}" MinimumWidthRequest="{StaticResource NavigationTileWidth}" Margin="{StaticResource ActionGap}" FlexLayout.Grow="1" />
+     <Button Text="Storico" Command="{Binding OpenSectionCommand}" CommandParameter="history" Style="{StaticResource NavigationButton}" MinimumWidthRequest="{StaticResource NavigationTileWidth}" Margin="{StaticResource ActionGap}" FlexLayout.Grow="1" />
+     <Button Text="Statistiche" Command="{Binding OpenSectionCommand}" CommandParameter="statistics" Style="{StaticResource NavigationButton}" MinimumWidthRequest="{StaticResource NavigationTileWidth}" Margin="{StaticResource ActionEndGap}" FlexLayout.Grow="1" />
+    </FlexLayout>
+    <Button Text="Tutti i quiz e i tentativi" Command="{Binding OpenSectionCommand}" CommandParameter="quizzes" Style="{StaticResource QuietButton}" HorizontalOptions="Start" />
+   </VerticalStackLayout>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Il progetto" Style="{StaticResource Strong}" /><BoxView Color="{Binding Card.Color}" HeightRequest="{StaticResource Space4}" CornerRadius="{StaticResource IndicatorRadius}" />
+    <Label Text="{Binding Card.Description}" IsVisible="{Binding Card.HasDescription}" Style="{StaticResource Muted}" />
+    <FlexLayout Wrap="Wrap" BindableLayout.ItemsSource="{Binding Card.Tags}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="x:String"><Border Style="{StaticResource TagPill}"><Label Text="{Binding .}" Style="{StaticResource Caption}" /></Border></DataTemplate></BindableLayout.ItemTemplate></FlexLayout>
+    <Label Text="{Binding Card.CreatedLabel}" Style="{StaticResource Caption}" /><Label Text="{Binding Card.UpdatedLabel}" Style="{StaticResource Caption}" />
+   </VerticalStackLayout></Border>
+   <Button Text="Torna ai progetti" Command="{Binding BackToProjectsCommand}" Style="{StaticResource QuietButton}" />
+  </VerticalStackLayout></ScrollView>
+ </Grid>
+</ContentPage>

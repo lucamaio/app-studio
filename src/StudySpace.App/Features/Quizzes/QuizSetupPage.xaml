@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Quizzes" xmlns:flash="clr-namespace:StudySpace.App.Features.Flashcards"
+ x:Class="StudySpace.App.Features.Quizzes.QuizSetupPage" x:DataType="vm:QuizSetupViewModel" Title="Nuovo quiz">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" /><Label Text="Prepara il tuo quiz" Style="{StaticResource Heading}" />
+  <Border Style="{StaticResource Card}"><Label Text="{Binding ProviderMessage}" /></Border>
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout IsEnabled="{Binding IsReady}" Spacing="{StaticResource Space16}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsStarted}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="Tipo quiz" Style="{StaticResource Subheading}" />
+    <Picker Title="Tipo quiz" ItemsSource="{Binding Modes}" SelectedItem="{Binding SelectedMode}" ItemDisplayBinding="{Binding Title,x:DataType=vm:QuizModeChoice}" />
+    <Label Text="Numero domande" /><Picker Title="Numero domande" ItemsSource="{Binding Counts}" SelectedItem="{Binding SelectedCount}" ItemDisplayBinding="{Binding Title,x:DataType=vm:QuizCountChoice}" />
+    <Entry Text="{Binding CustomCount}" Placeholder="Da 1 a 50" Keyboard="Numeric" MaxLength="2" IsVisible="{Binding IsCustomCount}" />
+    <Label Text="Difficoltà" /><Picker Title="Difficoltà" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}" ItemDisplayBinding="{Binding Title,x:DataType=flash:DifficultyChoice}" />
+    <Label Text="Il quiz misto contiene entrambi i tipi, circa metà per ciascuno. Difficoltà mista alterna Facile, Media e Difficile." Style="{StaticResource Muted}" />
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="Materiale del progetto" Style="{StaticResource Subheading}" /><Label Text="Scegli le fonti e le parti da usare: massimo 20 parti e 40.000 caratteri. I filtri per argomenti e tag arriveranno in seguito." Style="{StaticResource Muted}" /><flash:StudyMaterialPickerView BindingContext="{Binding Materials}" /></VerticalStackLayout></Border>
+  </VerticalStackLayout>
+  <Button Text="{Binding GenerateCaption}" Command="{Binding GenerateCommand}" IsEnabled="{Binding IsReady}" MinimumHeightRequest="{StaticResource PrimaryTouchTarget}" />
+  <Button Text="Annulla generazione" Command="{Binding GenerateCancelCommand}" IsVisible="{Binding GenerateCommand.IsRunning}" Style="{StaticResource QuietButton}" />
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+
+

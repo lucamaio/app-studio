@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Quizzes" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Quizzes.QuizzesPage" x:DataType="vm:QuizzesViewModel" Title="Quiz">
+ <Grid Padding="{StaticResource PageInset}" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="{StaticResource Space16}">
+  <VerticalStackLayout><Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" /><Label Text="Mettiti alla prova" Style="{StaticResource Heading}" /><Button Text="Nuovo quiz" Command="{Binding NewQuizCommand}" HorizontalOptions="Start" /></VerticalStackLayout>
+  <ActivityIndicator Grid.Row="1" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <VerticalStackLayout Grid.Row="2"><Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" /><Button Text="Ricarica" Command="{Binding LoadCommand}" Style="{StaticResource QuietButton}" /></VerticalStackLayout>
+  <Grid Grid.Row="3"><CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+   <CollectionView.ItemTemplate><DataTemplate x:DataType="vm:QuizAttemptItemViewModel"><Border Style="{StaticResource Card}" Margin="{StaticResource ItemGap}"><VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="{Binding Title}" Style="{StaticResource Subheading}" /><Label Text="{Binding Details}" Style="{StaticResource Muted}" /><Button Text="Apri tentativo" Command="{Binding OpenCommand}" /></VerticalStackLayout></Border></DataTemplate></CollectionView.ItemTemplate>
+   <CollectionView.Footer><Button Text="Carica altri tentativi" Command="{Binding MoreCommand}" IsVisible="{Binding HasMore}" /></CollectionView.Footer>
+  </CollectionView><controls:EmptyStateView Heading="Il primo passo è una domanda" Message="Crea un quiz dalle fonti del progetto. I tentativi salvati appariranno qui, pronti da riprendere." IsVisible="{Binding IsEmpty}" /></Grid>
+ </Grid>
+</ContentPage>
+
+

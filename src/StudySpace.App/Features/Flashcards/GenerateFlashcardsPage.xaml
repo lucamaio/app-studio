@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Flashcards" x:Class="StudySpace.App.Features.Flashcards.GenerateFlashcardsPage"
+ x:DataType="vm:GenerateFlashcardsViewModel" Title="Flashcard dalle fonti">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" /><Label Text="Dalle fonti alle idee" Style="{StaticResource Heading}" />
+  <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}"><Label Text="{Binding ProviderLabel}" Style="{StaticResource Subheading}" /><Label Text="{Binding ProviderMessage}" Style="{StaticResource Muted}" /></VerticalStackLayout></Border>
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Button Text="Annulla generazione" Command="{Binding GenerateCancelCommand}" IsVisible="{Binding GenerateCommand.IsRunning}" Style="{StaticResource QuietButton}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout Spacing="{StaticResource Space24}" IsVisible="{Binding IsSelecting}" IsEnabled="{Binding IsReady}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="1 · Scegli cosa preparare" Style="{StaticResource Subheading}" />
+    <Label Text="Numero desiderato · da 1 a 30" /><Entry Text="{Binding CountText}" Keyboard="Numeric" MaxLength="2" />
+    <Picker Title="Difficoltà facoltativa" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}" ItemDisplayBinding="{Binding Title, x:DataType=vm:DifficultyChoice}" />
+    <Label Text="Seleziona fino a 20 parti, per un massimo di 40.000 caratteri. La preparazione usa soltanto questo materiale." Style="{StaticResource Muted}" />
+   </VerticalStackLayout></Border>
+   <Border Style="{StaticResource Card}"><vm:StudyMaterialPickerView BindingContext="{Binding Materials}" /></Border>
+   <Button Text="{Binding GenerateCaption}" Command="{Binding GenerateCommand}" />
+  </VerticalStackLayout>
+  <VerticalStackLayout IsVisible="{Binding IsPreview}" Spacing="{StaticResource Space16}">
+   <Label Text="2 · Rivedi l'anteprima" Style="{StaticResource Subheading}" />
+   <Label Text="Le schede non sono ancora salvate. Seleziona quelle utili, modifica i contenuti e conferma l'importazione." Style="{StaticResource Muted}" />
+   <Label Text="{Binding Messages}" /><Label Text="{Binding SelectionLabel}" FontFamily="{StaticResource SemiboldFont}" />
+   <VerticalStackLayout Spacing="{StaticResource Space16}">
+    <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsImported}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+    <FlexLayout Wrap="Wrap"><Button Text="Seleziona tutte" Command="{Binding SelectAllCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" /><Button Text="Deseleziona tutte" Command="{Binding DeselectAllCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" /><Button Text="Cambia materiale" Command="{Binding BackToMaterialsCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" /></FlexLayout>
+    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Preview}" Spacing="{StaticResource Space16}">
+     <BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:FlashcardPreviewItemViewModel">
+      <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+       <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="{StaticResource Space12}"><CheckBox IsChecked="{Binding IsSelected}" SemanticProperties.Description="Importa questa scheda" /><Label Grid.Column="1" Text="Importa questa scheda" VerticalOptions="Center" FontFamily="{StaticResource SemiboldFont}" /><Button Grid.Column="2" Text="Rimuovi" Command="{Binding RemoveCommand}" Style="{StaticResource QuietButton}" /></Grid>
+       <Label Text="Fronte / domanda" /><Editor Text="{Binding Front}" MaxLength="2000" HeightRequest="110" />
+       <Label Text="Retro / risposta" /><Editor Text="{Binding Back}" MaxLength="8000" HeightRequest="140" />
+       <Label Text="Spiegazione" /><Editor Text="{Binding Explanation}" MaxLength="8000" HeightRequest="90" />
+       <Picker Title="Difficoltà" ItemsSource="{Binding Difficulties}" SelectedItem="{Binding SelectedDifficulty}" ItemDisplayBinding="{Binding Title, x:DataType=vm:DifficultyChoice}" />
+       <Entry Text="{Binding TagsText}" MaxLength="329" Placeholder="Etichette separate da virgole" />
+       <Label Text="Brani di riferimento" FontFamily="{StaticResource SemiboldFont}" />
+       <VerticalStackLayout BindableLayout.ItemsSource="{Binding Citations}" Spacing="{StaticResource Space8}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:CitationPresentation"><VerticalStackLayout Spacing="{StaticResource Space4}"><Label Text="{Binding Title}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" /><Label Text="{Binding Quote}" FontSize="{StaticResource FontCaption}" /></VerticalStackLayout></DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+      </VerticalStackLayout></Border>
+     </DataTemplate></BindableLayout.ItemTemplate>
+    </VerticalStackLayout>
+   </VerticalStackLayout>
+   <Button Text="{Binding ImportCaption}" Command="{Binding ImportCommand}" MinimumHeightRequest="{StaticResource PrimaryTouchTarget}" />
+  </VerticalStackLayout>
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+

@@ -1,0 +1,21 @@
+<linker>
+  <!-- sqlite-net maps this DTO through reflection in Release builds. -->
+  <assembly fullname="StudySpace.Infrastructure">
+    <type fullname="StudySpace.Infrastructure.Persistence.ProjectRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.TagRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.SourceRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.ChunkRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.FlashcardRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.FlashcardTagRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.FlashcardCitationRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.MaterialSourceRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.StudyChunkRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.QuizAttemptRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.QuizAttemptDetailsRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.QuizAttemptListRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.QuizAnswerRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.QuizSnapshotRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.PerformanceHistoryRow" preserve="all" />
+    <type fullname="StudySpace.Infrastructure.Persistence.PerformanceTagRow" preserve="all" />
+  </assembly>
+</linker>

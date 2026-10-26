@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Sources" x:Class="StudySpace.App.Features.Sources.ManualSourcePage"
+ x:DataType="vm:ManualSourceViewModel" Title="Nuovo testo">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" />
+  <Label Text="Spazio ai tuoi appunti" Style="{StaticResource Heading}" />
+  <Label Text="Incolla o scrivi il materiale. Il testo sarà conservato e suddiviso in parti per lo studio." Style="{StaticResource Muted}" />
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space16}" IsEnabled="{Binding IsReady}">
+   <VerticalStackLayout.Triggers>
+    <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger>
+    <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsSaved}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger>
+   </VerticalStackLayout.Triggers>
+   <Label Text="Titolo *" /><Entry Text="{Binding Title}" MaxLength="200" Placeholder="Ad esempio: Appunti sulle reti TCP/IP" />
+   <Label Text="Testo *" /><Editor Text="{Binding Text}" MaxLength="2000000" Placeholder="Scrivi o incolla qui…" HeightRequest="300" />
+  </VerticalStackLayout></Border>
+  <Button Text="Salva fonte" Command="{Binding SaveCommand}" IsEnabled="{Binding IsReady}">
+   <Button.Triggers><DataTrigger TargetType="Button" Binding="{Binding IsSaved}" Value="True"><Setter Property="Text" Value="Torna alle fonti" /></DataTrigger></Button.Triggers>
+  </Button>
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Projects" x:Class="StudySpace.App.Features.Projects.CreateProjectPage" x:DataType="vm:CreateProjectViewModel" Title="{Binding Title}">
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space16}" MaximumWidthRequest="{StaticResource FormWidth}">
+            <Label Text="{Binding Heading}" Style="{StaticResource Heading}" />
+            <Label Text="Nome, colore ed etichette ti aiutano a ritrovare ogni materia." Style="{StaticResource Muted}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="{StaticResource Space12}">
+                    <VerticalStackLayout.Triggers>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsSaved}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger>
+                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsReady}" Value="False"><Setter Property="IsEnabled" Value="False" /></DataTrigger>
+                    </VerticalStackLayout.Triggers>
+                    <Label Text="Nome del progetto · obbligatorio" />
+                    <Entry Text="{Binding Name}" Placeholder="Es. Sicurezza dei Sistemi" MaxLength="120" SemanticProperties.Description="Nome del progetto, obbligatorio" />
+                    <Label Text="Descrizione · facoltativa" />
+                    <Editor Text="{Binding Description}" Placeholder="Che cosa vuoi imparare?" MaxLength="2000" AutoSize="TextChanges" MinimumHeightRequest="{StaticResource ShortEditorHeight}" />
+                    <Label Text="Icona · facoltativa" />
+                    <Picker ItemsSource="{Binding Icons}" SelectedItem="{Binding SelectedIcon}" ItemDisplayBinding="{Binding Title, x:DataType=vm:IconChoice}" />
+                    <Label Text="Colore del progetto" />
+                    <Grid ColumnDefinitions="40,*" ColumnSpacing="{StaticResource Space12}">
+                        <BoxView Color="{Binding SelectedColor.Hex}" CornerRadius="{StaticResource SwatchRadius}" HeightRequest="36" VerticalOptions="Center" />
+                        <Picker Grid.Column="1" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}" ItemDisplayBinding="{Binding Title, x:DataType=vm:ColorChoice}" />
+                    </Grid>
+                    <Label Text="Etichette" />
+                    <Entry Text="{Binding TagsText}" Placeholder="Es. esame, informatica, semestre 1" MaxLength="500" />
+                    <Label Text="Separate da virgole · massimo 10 etichette da 32 caratteri." Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+                    <HorizontalStackLayout>
+                        <CheckBox IsChecked="{Binding IsFavorite}" />
+                        <Label Text="Aggiungi ai preferiti" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+            <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Button Text="{Binding SaveLabel}" Command="{Binding SaveCommand}" IsEnabled="{Binding IsReady}" />
+            <Button Text="Ricarica i dati salvati" Command="{Binding ReloadCommand}" IsVisible="{Binding IsEditing}" Style="{StaticResource QuietButton}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

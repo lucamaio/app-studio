@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+ <Color x:Key="Accent">#4C54C7</Color><Color x:Key="AccentDark">#BDC5FF</Color>
+ <Color x:Key="PrimaryDark">#5865D4</Color><Color x:Key="OnPrimary">#FFFFFF</Color>
+ <Color x:Key="CanvasLight">#F6F7FB</Color><Color x:Key="CanvasDark">#12151C</Color>
+ <Color x:Key="SurfaceLight">#FFFFFF</Color><Color x:Key="SurfaceDark">#1B202A</Color>
+ <Color x:Key="ElevatedLight">#EEF1F8</Color><Color x:Key="ElevatedDark">#252D3B</Color>
+ <Color x:Key="BorderLight">#D6DBE6</Color><Color x:Key="BorderDark">#3C475A</Color>
+ <Color x:Key="InkLight">#202938</Color><Color x:Key="InkDark">#F2F5FB</Color>
+ <Color x:Key="MutedLight">#5D687A</Color><Color x:Key="MutedDark">#B8C2D4</Color>
+ <Color x:Key="DisabledSurfaceLight">#E7EAF2</Color><Color x:Key="DisabledSurfaceDark">#303746</Color>
+ <Color x:Key="DisabledInkLight">#596477</Color><Color x:Key="DisabledInkDark">#BAC3D2</Color>
+ <Color x:Key="SuccessLight">#186449</Color><Color x:Key="SuccessDark">#86E0B7</Color>
+ <Color x:Key="SuccessSurfaceLight">#E6F5ED</Color><Color x:Key="SuccessSurfaceDark">#173A2C</Color>
+ <Color x:Key="ErrorLight">#A52A3C</Color><Color x:Key="ErrorDark">#FFB1BB</Color>
+ <Color x:Key="ErrorSurfaceLight">#FCECEF</Color><Color x:Key="ErrorSurfaceDark">#40232D</Color>
+ <Color x:Key="WarningLight">#775000</Color><Color x:Key="WarningDark">#F3CF86</Color>
+ <Color x:Key="WarningSurfaceLight">#FFF4D8</Color><Color x:Key="WarningSurfaceDark">#3D321E</Color>
+ <Color x:Key="Clear">#00000000</Color>
+</ResourceDictionary>

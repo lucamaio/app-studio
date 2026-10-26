@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Settings" x:Class="StudySpace.App.Features.Settings.SettingsPage" x:DataType="vm:SettingsViewModel" Title="Impostazioni">
+    <ScrollView>
+        <VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource FormWidth}">
+            <Label Text="Il tuo spazio, a modo tuo" Style="{StaticResource Heading}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="{StaticResource Space12}">
+                    <Label Text="Aspetto" Style="{StaticResource Subheading}" />
+                    <Label Text="Con Sistema, StudySpace segue automaticamente il tema del dispositivo." Style="{StaticResource Muted}" />
+                    <Picker Title="Tema" ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme}" ItemDisplayBinding="{Binding Title, x:DataType=vm:ThemeChoice}" />
+                </VerticalStackLayout>
+            </Border>
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="{StaticResource Space12}">
+                    <Label Text="Valutazione delle risposte aperte" Style="{StaticResource Subheading}" />
+                    <Label Text="Usa un modello Ollama già installato sul tuo computer o su un server di fiducia. Non serve una API key. StudySpace non installa né scarica modelli." Style="{StaticResource Muted}" />
+                    <HorizontalStackLayout Spacing="{StaticResource Space12}"><Switch IsToggled="{Binding EvaluationEnabled}" /><Label Text="Attiva Ollama" VerticalOptions="Center" /></HorizontalStackLayout>
+                    <Label Text="Indirizzo del server" /><Entry Text="{Binding EvaluationEndpoint}" Placeholder="http://localhost:11434" Keyboard="Url" />
+                    <Label Text="Modello installato" /><Entry Text="{Binding EvaluationModel}" Placeholder="Nome esatto del modello in Ollama" MaxLength="100" />
+                    <Label Text="Quando premi Verifica ora o Termina quiz, invieremo al server indicato la risposta, la domanda e i relativi estratti delle fonti. La generazione dei quiz resta dimostrativa. La confidenza è dichiarata dal modello e non garantisce l'esattezza del giudizio." Style="{StaticResource Muted}" />
+                    <Label Text="Su Android, localhost indica il telefono: usa l'indirizzo del computer nella rete privata (HTTP non cifrato) o un server HTTPS. Nell'emulatore Android puoi usare http://10.0.2.2:11434." Style="{StaticResource Muted}" />
+                    <Button Text="Salva impostazioni AI" Command="{Binding SaveEvaluationCommand}" />
+                    <Label Text="{Binding EvaluationSaved}" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Border>
+            <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="{StaticResource Space12}">
+                    <Label Text="Uno spazio personale" Style="{StaticResource Subheading}" />
+                    <Label Text="I tuoi progetti sono salvati su questo dispositivo. Non serve un account per iniziare." Style="{StaticResource Muted}" />
+                    <Label Text="StudySpace · 0.1.0" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+

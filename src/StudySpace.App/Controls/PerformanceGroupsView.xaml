@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:local="clr-namespace:StudySpace.App.Controls" xmlns:vm="clr-namespace:StudySpace.App.Features.Performance"
+ x:Class="StudySpace.App.Controls.PerformanceGroupsView" x:Name="Root">
+ <VerticalStackLayout Spacing="{StaticResource Space12}" BindableLayout.ItemsSource="{Binding ItemsSource, Source={x:Reference Root}, x:DataType=local:PerformanceGroupsView}">
+  <BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:PerformanceGroupViewModel">
+   <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space12}">
+    <Label Text="{Binding Kind}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" />
+    <Label Text="{Binding Name}" Style="{StaticResource Subheading}" LineBreakMode="WordWrap" />
+    <Label Text="{Binding Details}" /><Label Text="{Binding Suggestions}" Style="{StaticResource Muted}" />
+    <VerticalStackLayout Spacing="{StaticResource Space6}" BindableLayout.ItemsSource="{Binding References}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:EvidenceLinkViewModel">
+     <Button Text="{Binding Title}" Command="{Binding OpenCommand}" LineBreakMode="WordWrap" Style="{StaticResource QuietButton}" HorizontalOptions="Start" />
+    </DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+   </VerticalStackLayout></Border>
+  </DataTemplate></BindableLayout.ItemTemplate>
+ </VerticalStackLayout>
+</ContentView>
+

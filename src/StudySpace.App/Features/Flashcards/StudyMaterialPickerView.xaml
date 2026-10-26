@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Flashcards" x:Class="StudySpace.App.Features.Flashcards.StudyMaterialPickerView" x:DataType="vm:StudyMaterialPickerViewModel">
+ <VerticalStackLayout Spacing="{StaticResource Space16}">
+  <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+  <Label Text="Materiale e riferimenti" Style="{StaticResource Subheading}" />
+  <Picker Title="Scegli una fonte pronta" ItemsSource="{Binding Sources}" SelectedItem="{Binding SelectedSource}" ItemDisplayBinding="{Binding DisplayTitle, x:DataType=vm:MaterialSourceChoice}" />
+  <FlexLayout Wrap="Wrap">
+   <Button Text="Carica parti" Command="{Binding LoadChunksCommand}" Margin="{StaticResource ActionGap}" />
+   <Button Text="Aggiorna fonti" Command="{Binding LoadCommand}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" />
+   <Button Text="Altre fonti" Command="{Binding MoreSourcesCommand}" IsVisible="{Binding HasMoreSources}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+  </FlexLayout>
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Label Text="{Binding MaterialMessage}" Style="{StaticResource Muted}" />
+  <Label Text="{Binding SelectionLabel}" FontFamily="{StaticResource SemiboldFont}" />
+  <VerticalStackLayout BindableLayout.ItemsSource="{Binding Selected}" Spacing="{StaticResource Space8}">
+   <BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:SelectedReferenceViewModel">
+    <Border Style="{StaticResource TagPill}"><Grid ColumnDefinitions="*,Auto" ColumnSpacing="{StaticResource Space8}">
+     <VerticalStackLayout Spacing="{StaticResource Space4}"><Label Text="{Binding Title}" FontFamily="{StaticResource SemiboldFont}" FontSize="{StaticResource FontCaption}" /><Label Text="{Binding Preview}" FontSize="{StaticResource FontCaption}" /></VerticalStackLayout>
+     <Button Grid.Column="1" Text="Rimuovi" Command="{Binding RemoveCommand}" Style="{StaticResource QuietButton}" />
+    </Grid></Border>
+   </DataTemplate></BindableLayout.ItemTemplate>
+  </VerticalStackLayout>
+  <Button Text="Deseleziona tutti i riferimenti" Command="{Binding ClearSelectionCommand}" Style="{StaticResource QuietButton}" HorizontalOptions="Start" />
+  <VerticalStackLayout BindableLayout.ItemsSource="{Binding Chunks}" Spacing="{StaticResource Space12}">
+   <BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:ChunkChoiceViewModel">
+    <Border Style="{StaticResource Card}" Padding="{StaticResource Inset16}"><Grid ColumnDefinitions="Auto,*" ColumnSpacing="{StaticResource Space12}">
+     <CheckBox IsChecked="{Binding IsSelected}" VerticalOptions="Start" SemanticProperties.Description="{Binding Title}" />
+     <VerticalStackLayout Grid.Column="1" Spacing="{StaticResource Space6}"><Label Text="{Binding Title}" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Locator}" Style="{StaticResource Muted}" FontSize="{StaticResource FontCaption}" /><Label Text="{Binding Preview}" /></VerticalStackLayout>
+    </Grid></Border>
+   </DataTemplate></BindableLayout.ItemTemplate>
+  </VerticalStackLayout>
+  <FlexLayout Wrap="Wrap">
+   <Button Text="Parti precedenti" Command="{Binding PreviousChunksCommand}" IsVisible="{Binding CanPreviousChunks}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionGap}" />
+   <Button Text="Parti successive" Command="{Binding MoreChunksCommand}" IsVisible="{Binding HasMoreChunks}" Style="{StaticResource QuietButton}" Margin="{StaticResource ActionEndGap}" />
+  </FlexLayout>
+ </VerticalStackLayout>
+</ContentView>
+

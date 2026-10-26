@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\StudySpace.Application\StudySpace.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+    <!-- The presentation logic has no MAUI dependency and is tested without a device. -->
+    <Compile Include="../../src/StudySpace.App/Common/ViewModelBase.cs" Link="Presentation/ViewModelBase.cs" />
+    <Compile Include="../../src/StudySpace.App/Features/Projects/*ViewModel.cs" Link="Presentation/%(Filename)%(Extension)" />
+    <Compile Include="../../src/StudySpace.App/Features/Sources/*ViewModel.cs" Link="Presentation/%(Filename)%(Extension)" />
+    <Compile Include="../../src/StudySpace.App/Features/Flashcards/*ViewModel.cs" Link="Presentation/%(Filename)%(Extension)" />
+    <Compile Include="../../src/StudySpace.App/Features/Performance/*ViewModel.cs" Link="Presentation/%(Filename)%(Extension)" />
+    <Compile Include="../../src/StudySpace.App/Features/Quizzes/*ViewModel.cs" Link="Presentation/%(Filename)%(Extension)" />
+    <Compile Include="../../src/StudySpace.App/Services/IQuizDialogs.cs" Link="Presentation/IQuizDialogs.cs" />
+    <Compile Include="../../src/StudySpace.App/Services/IFlashcardDialogs.cs" Link="Presentation/IFlashcardDialogs.cs" />
+    <Compile Include="../../src/StudySpace.App/Services/ISourceInteractions.cs" Link="Presentation/ISourceInteractions.cs" />
+    <Compile Include="../../src/StudySpace.App/Features/Settings/SettingsViewModel.cs" Link="Presentation/SettingsViewModel.cs" />
+    <Compile Include="../../src/StudySpace.App/Navigation/INavigationService.cs" Link="Presentation/INavigationService.cs" />
+    <Compile Include="../../src/StudySpace.App/Services/IThemeService.cs" Link="Presentation/IThemeService.cs" />
+    <Compile Include="../../src/StudySpace.App/Services/IProjectDialogs.cs" Link="Presentation/IProjectDialogs.cs" />
+    <Compile Include="../../src/StudySpace.App/Features/Projects/ProjectActions.cs" Link="Presentation/ProjectActions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="../../src/StudySpace.App/Resources/Styles/*.xaml" Link="Design/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/StudySpace.App/Features/**/*.xaml" Link="Design/Views/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../src/StudySpace.App/Controls/*.xaml" Link="Design/Controls/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
+
+

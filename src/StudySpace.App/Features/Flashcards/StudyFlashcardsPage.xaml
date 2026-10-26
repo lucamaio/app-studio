@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+ xmlns:vm="clr-namespace:StudySpace.App.Features.Flashcards" xmlns:controls="clr-namespace:StudySpace.App.Controls"
+ x:Class="StudySpace.App.Features.Flashcards.StudyFlashcardsPage" x:DataType="vm:StudyFlashcardsViewModel" Title="Studio flashcard">
+ <ScrollView><VerticalStackLayout Padding="{StaticResource PageInset}" Spacing="{StaticResource Space24}" MaximumWidthRequest="{StaticResource ContentWidth}">
+  <Label Text="{Binding ProjectName}" Style="{StaticResource Muted}" /><Label Text="{Binding PositionLabel}" Style="{StaticResource Subheading}" />
+  <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+  <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource Error}" />
+  <Button Text="Riprova caricamento" Command="{Binding LoadCommand}" IsVisible="{Binding HasError}" />
+  <VerticalStackLayout Spacing="{StaticResource Space24}" IsVisible="{Binding HasCard}">
+   <VerticalStackLayout.Triggers><DataTrigger TargetType="VerticalStackLayout" Binding="{Binding IsBusy}" Value="True"><Setter Property="IsEnabled" Value="False" /></DataTrigger></VerticalStackLayout.Triggers>
+   <Border Style="{StaticResource Card}" MinimumHeightRequest="{StaticResource AnswerHeight}"><VerticalStackLayout Spacing="{StaticResource Space16}"><Label Text="Domanda" Style="{StaticResource Muted}" /><Label Text="{Binding Front}" FontSize="{StaticResource FontQuestion}" FontFamily="{StaticResource SemiboldFont}" /></VerticalStackLayout></Border>
+   <Button Text="{Binding AnswerButtonLabel}" Command="{Binding ToggleAnswerCommand}" MinimumHeightRequest="{StaticResource PrimaryTouchTarget}" />
+   <VerticalStackLayout IsVisible="{Binding IsAnswerVisible}" Spacing="{StaticResource Space16}">
+    <Border Style="{StaticResource Card}"><VerticalStackLayout Spacing="{StaticResource Space16}"><Label Text="Risposta" Style="{StaticResource Subheading}" /><Label Text="{Binding Back}" FontSize="{StaticResource FontTitle}" /><Label Text="Spiegazione" IsVisible="{Binding HasExplanation}" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Explanation}" IsVisible="{Binding HasExplanation}" /></VerticalStackLayout></Border>
+    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Citations}" Spacing="{StaticResource Space12}"><BindableLayout.ItemTemplate><DataTemplate x:DataType="vm:CitationPresentation"><Border Style="{StaticResource Card}" Padding="{StaticResource Inset16}"><VerticalStackLayout Spacing="{StaticResource Space8}"><Label Text="{Binding Title}" FontFamily="{StaticResource SemiboldFont}" /><Label Text="{Binding Quote}" Style="{StaticResource Muted}" /></VerticalStackLayout></Border></DataTemplate></BindableLayout.ItemTemplate></VerticalStackLayout>
+   </VerticalStackLayout>
+   <Grid ColumnDefinitions="*,*" ColumnSpacing="{StaticResource Space12}"><Button Text="← Precedente" Command="{Binding PreviousCommand}" IsEnabled="{Binding CanPrevious}" /><Button Grid.Column="1" Text="Successiva →" Command="{Binding NextCommand}" IsEnabled="{Binding CanNext}" /></Grid>
+   <Button Text="Mescola le schede" Command="{Binding ShuffleCommand}" Style="{StaticResource QuietButton}" />
+  </VerticalStackLayout>
+  <controls:EmptyStateView Heading="Nessuna scheda da studiare" Message="Torna alle flashcard e modifica i filtri oppure crea una nuova scheda." IsVisible="{Binding IsEmpty}" />
+  <Button Text="Torna alle flashcard" Command="{Binding BackToCardsCommand}" Style="{StaticResource QuietButton}" />
+ </VerticalStackLayout></ScrollView>
+</ContentPage>
+
